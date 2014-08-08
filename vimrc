@@ -1,7 +1,7 @@
 "
 " d412vv1n's vim config
 " 
-" ... probably not the config
+" ... probably not the smartest one
 "
 
 "------------------------------------------------------------------------------
@@ -55,4 +55,7 @@ if has('gui_running')
     set go-=T
     set go-=r
     set go-=L
+
+    set listchars=tab:▶\ ,eol:¬
+    set list
 endif
