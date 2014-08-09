@@ -45,8 +45,13 @@ nmap <F7> :NERDTreeToggle<CR>
 "------------------------------------------------------------------------------
 
 if has('gui_running')
+    if has('mac')
+        set gfn=Menlo\ Regular:h14
+    else
+        set gfn=Source\ Code\ Pro\ 11
+    endif
+
     color codeschool
-    set gfn=Source\ Code\ Pro\ 11
     
     " remove the menu tool
     set go-=m
