@@ -23,8 +23,9 @@ set number
 
 set wildmenu
 
-" disable the annoying beeping
-set vb
+" disable all the annoying bells and window flushing... also see auto
+" commands section below
+set noeb vb t_vb=
 
 "------------------------------------------------------------------------------
 " Automatic commands
@@ -32,6 +33,9 @@ set vb
 
 autocmd FileType make setlocal noexpandtab
 autocmd BufRead,BufNewFile *.factor set filetype=forth
+
+" disable all kinds of bells
+autocmd GUIEnter * set vb t_vb=
 
 "------------------------------------------------------------------------------
 " NERDTree plugin settings
