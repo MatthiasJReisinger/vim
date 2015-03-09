@@ -80,4 +80,7 @@ if has('gui_running')
     " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
     " The following changes the default filetype back to 'tex':
     let g:tex_flavor='latex'
+
+    let g:Tex_DefaultTargetFormat='pdf'
+    let g:Tex_MultipleCompileFormats='pdf'
 endif
