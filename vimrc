@@ -20,6 +20,7 @@ set expandtab
 set number
 set wildmenu
 set scrolloff=0
+set modeline
 
 filetype plugin indent on
 
