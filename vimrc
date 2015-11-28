@@ -68,17 +68,39 @@ let g:tex_flavor='latex'
 " The following changes the default filetype back to 'tex':
 let g:tex_flavor='latex'
 
+" Setup the compile rule for pdf to use pdflatex with synctex enabled
+let g:Tex_CompileRule_pdf = 'pdflatex -synctex=1 --interaction=nonstopmode $*'
+
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_MultipleCompileFormats='pdf'
 
 " Suppress folding of environments
 let g:Tex_FoldedEnvironments=''
+let g:Tex_FoldedMisc=''
 
 let g:Tex_GotoError=0
+
+let g:Tex_IgnoredWarnings =
+    \'Underfull'."\n".
+    \'Overfull'."\n".
+    \'specifier changed to'."\n".
+    \'You have requested'."\n".
+    \'Missing number, treated as zero.'."\n".
+    \'There were undefined references'."\n".
+    \'LaTeX Font Warning:'."\n".
+    \'Citation %.%# undefined'
 
 if has('mac')
     let g:Tex_ViewRule_ps = 'open -a Preview'
     let g:Tex_ViewRule_pdf = 'open -a Preview'
+endif
+
+"------------------------------------------------------------------------------
+" vim-latex-live-preview plugin settings
+"------------------------------------------------------------------------------
+
+if has('mac')
+    let g:livepreview_previewer = 'open -a Preview'
 endif
 
 "------------------------------------------------------------------------------
