@@ -96,6 +96,15 @@ if has('mac')
     let g:Tex_ViewRule_pdf = 'open -a Preview'
 endif
 
+" Compile with XeTex with \lx
+function CompileXeTex()
+    let oldCompileRule=g:Tex_CompileRule_pdf
+    let g:Tex_CompileRule_pdf = 'xelatex -aux-directory=F:/Vim/my_latex_doc/temp --synctex=-1 -src-specials -interaction=nonstopmode $*'
+    call Tex_RunLaTeX()
+    let g:Tex_CompileRule_pdf=oldCompileRule
+endfunction
+map <Leader>lx :<C-U>call CompileXeTex()<CR>
+
 "------------------------------------------------------------------------------
 " vim-latex-live-preview plugin settings
 "------------------------------------------------------------------------------
