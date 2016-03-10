@@ -38,6 +38,8 @@ autocmd BufRead,BufNewFile *.factor set filetype=forth
 " disable all kinds of bells
 autocmd GUIEnter * set vb t_vb=
 
+autocmd FileType tex set textwidth=80
+
 "------------------------------------------------------------------------------
 " NERDTree plugin settings
 "------------------------------------------------------------------------------
