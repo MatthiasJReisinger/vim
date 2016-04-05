@@ -16,3 +16,6 @@
 [submodule "bundle/YCM-Generator"]
 	path = bundle/YCM-Generator
 	url = git@github.com:rdnetto/YCM-Generator.git
+[submodule "bundle/vim-minizinc"]
+	path = bundle/vim-minizinc
+	url = git@github.com:vale1410/vim-minizinc.git
