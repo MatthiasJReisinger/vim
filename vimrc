@@ -38,8 +38,6 @@ autocmd BufRead,BufNewFile *.factor set filetype=forth
 " disable all kinds of bells
 autocmd GUIEnter * set vb t_vb=
 
-autocmd FileType tex set textwidth=80
-
 "------------------------------------------------------------------------------
 " NERDTree plugin settings
 "------------------------------------------------------------------------------
@@ -120,6 +118,7 @@ endif
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_enable_diagnostic_signs = 0
+let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
 
 "------------------------------------------------------------------------------
 " GUI things
