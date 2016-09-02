@@ -10,9 +10,6 @@
 [submodule "bundle/vim-latex-live-preview"]
 	path = bundle/vim-latex-live-preview
 	url = git@github.com:xuhdev/vim-latex-live-preview.git
-[submodule "bundle/YouCompleteMe"]
-	path = bundle/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe
 [submodule "bundle/YCM-Generator"]
 	path = bundle/YCM-Generator
 	url = git@github.com:rdnetto/YCM-Generator.git
@@ -22,3 +19,6 @@
 [submodule "bundle/julia-vim"]
 	path = bundle/julia-vim
 	url = git@github.com:JuliaLang/julia-vim.git
+[submodule "bundle/YouCompleteMe"]
+	path = bundle/YouCompleteMe
+	url = git@github.com:Valloric/YouCompleteMe.git
