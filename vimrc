@@ -38,6 +38,9 @@ autocmd BufRead,BufNewFile *.factor set filetype=forth
 " disable all kinds of bells
 autocmd GUIEnter * set vb t_vb=
 
+" Enable spell checking and limit textwidth in git commit messages.
+autocmd Filetype gitcommit setlocal spell textwidth=72
+
 "------------------------------------------------------------------------------
 " NERDTree plugin settings
 "------------------------------------------------------------------------------
