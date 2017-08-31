@@ -92,7 +92,12 @@ let g:Tex_IgnoredWarnings =
     \'Missing number, treated as zero.'."\n".
     \'There were undefined references'."\n".
     \'LaTeX Font Warning:'."\n".
-    \'Citation %.%# undefined'
+    \'Citation %.%# undefined'."\n".
+    \'LateX Warning: Empty'."\n".
+    \'Package fmtcount Warning: %.%# already defined'."\n".
+    \'Package glossaries Warning: Overriding %.%#'
+
+let g:Tex_IgnoreLevel = 100000000
 
 if has('mac')
     let g:Tex_ViewRule_ps = 'open -a Preview'
