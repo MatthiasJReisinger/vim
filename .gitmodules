@@ -13,7 +13,3 @@
 [submodule "bundle/YouCompleteMe"]
 	path = bundle/YouCompleteMe
 	url = git@github.com:Valloric/YouCompleteMe.git
-[submodule "bundle/julia-vim"]
-	path = bundle/julia-vim
-	url = git@github.com:JuliaEditorSupport/julia-vim.git
-	branch = master
