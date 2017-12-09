@@ -19,3 +19,7 @@
 [submodule "bundle/YCM-Generator"]
 	path = bundle/YCM-Generator
 	url = git@github.com:rdnetto/YCM-Generator.git
+[submodule "bundle/rust.vim"]
+	path = bundle/rust.vim
+	url = git@github.com:rust-lang/rust.vim.git
+	branch = master
