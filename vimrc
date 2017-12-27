@@ -21,6 +21,8 @@ set number
 set wildmenu
 set scrolloff=0
 set modeline
+set listchars=tab:▶\ ,eol:¬
+set list
 
 let mapleader=","
 
@@ -140,11 +142,7 @@ nnoremap <leader>dc :YcmCompleter GetDoc<CR>
 "------------------------------------------------------------------------------
 
 if has('gui_running')
-    if has('mac')
-        set gfn=Menlo\ Regular:h14
-    else
-        set gfn=Source\ Code\ Pro\ 11
-    endif
+    set gfn=Hack\ 11
 
     color codeschool
     
@@ -155,7 +153,4 @@ if has('gui_running')
     set go-=T
     set go-=r
     set go-=L
-
-    set listchars=tab:▶\ ,eol:¬
-    set list
 endif
