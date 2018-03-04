@@ -154,4 +154,7 @@ if has('gui_running')
     set go-=T
     set go-=r
     set go-=L
+
+    " suppress popups
+    set go+=c
 endif
