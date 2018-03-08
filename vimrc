@@ -132,7 +132,7 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_enable_diagnostic_signs = 0
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
 let g:ycm_collect_identifiers_from_tag_files = 1
-let g:ycm_server_python_interpreter = '/usr/bin/python'
+let g:ycm_server_python_interpreter = '/usr/bin/python2'
 
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
 nnoremap <leader>ty :YcmCompleter GetType<CR>
