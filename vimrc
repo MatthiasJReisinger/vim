@@ -145,6 +145,18 @@ nnoremap <leader>dc :YcmCompleter GetDoc<CR>
 let g:rustfmt_autosave = 1
 
 "------------------------------------------------------------------------------
+" vim-clang-format plugin settings
+"------------------------------------------------------------------------------
+
+let g:clang_format#detect_style_file = 1
+let g:clang_format#auto_format = 0
+let g:clang_format#enable_fallback_style = 0
+
+" map to <Leader>cf in C++ code
+autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+
+"------------------------------------------------------------------------------
 " GUI things
 "------------------------------------------------------------------------------
 
