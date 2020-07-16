@@ -13,9 +13,9 @@ execute pathogen#infect()
 syntax on
 set autoindent
 set ruler
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set expandtab
 set number
 set wildmenu
@@ -69,11 +69,6 @@ set grepprg=grep\ -nH\ $*
 " The following changes the default filetype back to 'tex':
 let g:tex_flavor='latex'
 
-" Starting with Vim 7, the filetype of empty .tex files defaults to
-" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
-" The following changes the default filetype back to 'tex':
-let g:tex_flavor='latex'
-
 " Setup the compile rule for pdf to use pdflatex with synctex enabled
 let g:Tex_CompileRule_pdf = 'pdflatex -synctex=1 --interaction=nonstopmode $*'
 
@@ -107,21 +102,13 @@ if has('mac')
 endif
 
 " Compile with XeTex with \lx
-function CompileXeTex()
-    let oldCompileRule=g:Tex_CompileRule_pdf
-    let g:Tex_CompileRule_pdf = 'xelatex -aux-directory=F:/Vim/my_latex_doc/temp --synctex=-1 -src-specials -interaction=nonstopmode $*'
-    call Tex_RunLaTeX()
-    let g:Tex_CompileRule_pdf=oldCompileRule
-endfunction
-map <Leader>lx :<C-U>call CompileXeTex()<CR>
-
-"------------------------------------------------------------------------------
-" vim-latex-live-preview plugin settings
-"------------------------------------------------------------------------------
-
-if has('mac')
-    let g:livepreview_previewer = 'open -a Preview'
-endif
+"function CompileXeTex()
+"    let oldCompileRule=g:Tex_CompileRule_pdf
+"    let g:Tex_CompileRule_pdf = 'xelatex -aux-directory=F:/Vim/my_latex_doc/temp --synctex=-1 -src-specials -interaction=nonstopmode $*'
+"    call Tex_RunLaTeX()
+"    let g:Tex_CompileRule_pdf=oldCompileRule
+"endfunction
+"map <Leader>lx :<C-U>call CompileXeTex()<CR>
 
 "------------------------------------------------------------------------------
 " YouCompleteMe plugin settings
@@ -132,7 +119,6 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_enable_diagnostic_signs = 0
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
 let g:ycm_collect_identifiers_from_tag_files = 1
-let g:ycm_server_python_interpreter = '/usr/bin/python2'
 
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
 nnoremap <leader>ty :YcmCompleter GetType<CR>
