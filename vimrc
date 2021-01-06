@@ -23,6 +23,7 @@ set scrolloff=0
 set modeline
 set listchars=tab:▶\ ,eol:¬
 set list
+set textwidth=120
 
 let mapleader=","
 
@@ -42,8 +43,8 @@ autocmd BufRead,BufNewFile *.factor set filetype=forth
 " disable all kinds of bells
 autocmd GUIEnter * set vb t_vb=
 
-" Enable spell checking and limit textwidth in git commit messages.
-autocmd Filetype gitcommit setlocal spell textwidth=72
+" Enable spell checking in git commit messages and latex.
+autocmd Filetype gitcommit,tex setlocal spell spelllang=en_us
 
 "------------------------------------------------------------------------------
 " NERDTree plugin settings
