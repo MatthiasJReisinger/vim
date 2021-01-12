@@ -133,6 +133,13 @@ let g:rustfmt_autosave = 1
 nnoremap <leader>cf :<C-u>Autoformat<CR>
 vnoremap <leader>cf :Autoformat<CR>
 
+" vim-autoformat seeks for configuration files of formatting tools starting from the current working directory upwards
+" in the folder hierarchy. Therefore, this autocmd changes the window-local current directory to be the same as the
+" directory of the current file. This ensures that vim-autoformat finds the right format configuration for the open
+" file. This approach of automatically changing the current working directory follows
+" https://vim.fandom.com/wiki/Set_working_directory_to_the_current_file.
+autocmd BufEnter * silent! lcd %:p:h
+
 "------------------------------------------------------------------------------
 " GUI things
 "------------------------------------------------------------------------------
