@@ -17,7 +17,6 @@ set scrolloff=0
 set modeline
 set listchars=tab:▶\ ,eol:¬
 set list
-set textwidth=120
 
 let mapleader=","
 
