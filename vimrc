@@ -131,6 +131,7 @@ let g:rustfmt_autosave = 1
 " map <leader>cf in normal and visual mode
 nnoremap <leader>cf :<C-u>Autoformat<CR>
 vnoremap <leader>cf :Autoformat<CR>
+let g:formatdef_latexindent = '"latexindent"'
 
 " vim-autoformat seeks for configuration files of formatting tools starting from the current working directory upwards
 " in the folder hierarchy. Therefore, this autocmd changes the window-local current directory to be the same as the
