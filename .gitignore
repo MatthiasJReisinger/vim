@@ -1,2 +1,5 @@
 *.swp
 *.pyc
+.netrwhist
+plugged
+view
