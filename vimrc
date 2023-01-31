@@ -52,6 +52,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'arcticicestudio/nord-vim'
 Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'rust-lang/rust.vim'
+Plug 'chriskempson/base16-vim'
+Plug 'vim-airline/vim-airline'
 
 call plug#end()
 
@@ -132,33 +134,21 @@ endif
 let g:rustfmt_autosave = 1
 
 "------------------------------------------------------------------------------
-" GUI things
-"------------------------------------------------------------------------------
-
-if has('gui_running')
-    set gfn=Hack\ 11
-
-    color nord
-
-    " remove the menu tool
-    set go-=m
-
-    " remove the scroll bars
-    set go-=T
-    set go-=r
-    set go-=L
-
-    " suppress popups
-    set go+=c
-endif
-
-"------------------------------------------------------------------------------
 " neovide
 "------------------------------------------------------------------------------
 
 if exists("g:neovide")
     let g:neovide_cursor_animation_length=0
     set guifont=Hack:h11
+endif
+
+"------------------------------------------------------------------------------
+" neovim-qt
+"------------------------------------------------------------------------------
+
+if exists(':GuiFont')
+    " Use GuiFont! to ignore font errors
+    GuiFont Hack:h11
 endif
 
 "------------------------------------------------------------------------------
