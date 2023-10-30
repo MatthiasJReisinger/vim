@@ -17,6 +17,7 @@ set scrolloff=0
 set modeline
 set listchars=tab:▶\ ,eol:¬
 set list
+set textwidth=0
 
 let mapleader=","
 
@@ -25,6 +26,11 @@ filetype plugin indent on
 " disable all the annoying bells and window flushing... also see auto
 " commands section below
 set noeb vb t_vb=
+
+lua << LUA
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+LUA
 
 nnoremap <leader>s :w<CR>
 nnoremap <leader>t :b#<CR>
@@ -50,27 +56,23 @@ call plug#begin()
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'arcticicestudio/nord-vim'
-Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'rust-lang/rust.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'vim-airline/vim-airline'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-tree/nvim-tree.lua'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.4' }
+Plug 'towolf/vim-helm'
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 
 call plug#end()
-
-"------------------------------------------------------------------------------
-" nord color scheme
-"------------------------------------------------------------------------------
-
-colorscheme nord
 
 "------------------------------------------------------------------------------
 " NERDTree plugin settings
 "------------------------------------------------------------------------------
 
 let NERDTreeShowHidden=1
-
-" Toggle NERDTree on and off with F7
-nmap <F7> :NERDTreeToggle<CR>
 
 "------------------------------------------------------------------------------
 " vim-latex plugin settings
@@ -139,7 +141,7 @@ let g:rustfmt_autosave = 1
 
 if exists("g:neovide")
     let g:neovide_cursor_animation_length=0
-    set guifont=Hack:h11
+    set guifont=Hack\ Nerd\ Font:h11
 endif
 
 "------------------------------------------------------------------------------
@@ -152,8 +154,46 @@ if exists(':GuiFont')
 endif
 
 "------------------------------------------------------------------------------
+" catppuccin
+"------------------------------------------------------------------------------
+
+lua << LUA
+require("catppuccin").setup({
+    integrations = {
+        coc_nvim = true,
+        native_lsp = {
+            enabled = true,
+            virtual_text = {
+                errors = { "italic" },
+                hints = { "italic" },
+                warnings = { "italic" },
+                information = { "italic" },
+            },
+            underlines = {
+                errors = { "undercurl" },
+                hints = { "undercurl" },
+                warnings = { "undercurl" },
+                information = { "undercurl" },
+            },
+        },
+    },
+    custom_highlights = function(colors)
+        return {
+            SpecialComment = { fg = colors.flamingo },
+        }
+    end
+})
+LUA
+
+colorscheme catppuccin-latte
+"highlight CocInlayHin ctermbg=Black
+
+
+"------------------------------------------------------------------------------
 " coc.nvim
 "------------------------------------------------------------------------------
+
+autocmd User CocStatusChange redraws
 
 " May need for Vim (not Neovim) since coc.nvim calculates byte offset by count
 " utf-8 byte sequence
@@ -202,6 +242,8 @@ endif
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent> [e <Plug>(coc-diagnostic-prev-error)
+nmap <silent> ]e <Plug>(coc-diagnostic-next-error)
 
 " GoTo code navigation
 nmap <silent> gd <Plug>(coc-definition)
@@ -230,12 +272,13 @@ nmap <leader>rn <Plug>(coc-rename)
 nmap <leader>cf  :Format<cr>
 xmap <leader>cf  <Plug>(coc-format-selected)
 
-augroup mygroup
+augroup customCocCommands
   autocmd!
   " Setup formatexpr specified filetype(s)
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
   " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+  autocmd BufRead,BufNewFile * call timer_start(250, { tid -> execute('CocCommand document.toggleCodeLens')})
 augroup end
 
 " Applying code actions to the selected code block
@@ -252,11 +295,12 @@ nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Remap keys for applying refactor code actions
 nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
-xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
-nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+xmap <silent> <leader>rs <Plug>(coc-codeaction-refactor-selected)
+nmap <silent> <leader>rs <Plug>(coc-codeaction-refactor-selected)
 
 " Run the Code Lens action on the current line
 nmap <leader>cl  <Plug>(coc-codelens-action)
+nmap <leader>ct  :CocCommand document.toggleCodeLens<cr>
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server
@@ -318,5 +362,121 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 let g:coc_global_extensions = [
     \   'coc-json',
-    \   'coc-rust-analyzer'
+    \   'coc-rust-analyzer',
+    \   'coc-spell-checker',
+    \   'coc-yaml',
+    \   'coc-toml',
+    \   'coc-clangd'
     \ ]
+
+"------------------------------------------------------------------------------
+" nvim-tree
+"------------------------------------------------------------------------------
+
+lua << LUA
+local on_attach = function(bufnr)
+    local api = require('nvim-tree.api')
+    -- BEGIN_DEFAULT_ON_ATTACH
+    local opts = function(desc)
+      return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+    end
+    vim.keymap.set('n', '<C-]>', api.tree.change_root_to_node,          opts('CD'))
+    vim.keymap.set('n', '<C-e>', api.node.open.replace_tree_buffer,     opts('Open: In Place'))
+    vim.keymap.set('n', '<C-k>', api.node.show_info_popup,              opts('Info'))
+    vim.keymap.set('n', '<C-r>', api.fs.rename_sub,                     opts('Rename: Omit Filename'))
+    vim.keymap.set('n', '<C-t>', api.node.open.tab,                     opts('Open: New Tab'))
+    vim.keymap.set('n', '<C-v>', api.node.open.vertical,                opts('Open: Vertical Split'))
+    vim.keymap.set('n', '<C-x>', api.node.open.horizontal,              opts('Open: Horizontal Split'))
+    vim.keymap.set('n', '<BS>',  api.node.navigate.parent_close,        opts('Close Directory'))
+    vim.keymap.set('n', '<CR>',  api.node.open.edit,                    opts('Open'))
+    vim.keymap.set('n', '<Tab>', api.node.open.preview,                 opts('Open Preview'))
+    vim.keymap.set('n', '>',     api.node.navigate.sibling.next,        opts('Next Sibling'))
+    vim.keymap.set('n', '<',     api.node.navigate.sibling.prev,        opts('Previous Sibling'))
+    vim.keymap.set('n', '.',     api.node.run.cmd,                      opts('Run Command'))
+    vim.keymap.set('n', '-',     api.tree.change_root_to_parent,        opts('Up'))
+    vim.keymap.set('n', 'a',     api.fs.create,                         opts('Create'))
+    vim.keymap.set('n', 'bmv',   api.marks.bulk.move,                   opts('Move Bookmarked'))
+    vim.keymap.set('n', 'B',     api.tree.toggle_no_buffer_filter,      opts('Toggle No Buffer'))
+    vim.keymap.set('n', 'c',     api.fs.copy.node,                      opts('Copy'))
+    vim.keymap.set('n', 'C',     api.tree.toggle_git_clean_filter,      opts('Toggle Git Clean'))
+    vim.keymap.set('n', '[c',    api.node.navigate.git.prev,            opts('Prev Git'))
+    vim.keymap.set('n', ']c',    api.node.navigate.git.next,            opts('Next Git'))
+    vim.keymap.set('n', 'd',     api.fs.remove,                         opts('Delete'))
+    vim.keymap.set('n', 'D',     api.fs.trash,                          opts('Trash'))
+    vim.keymap.set('n', 'E',     api.tree.expand_all,                   opts('Expand All'))
+    vim.keymap.set('n', 'e',     api.fs.rename_basename,                opts('Rename: Basename'))
+    vim.keymap.set('n', ']e',    api.node.navigate.diagnostics.next,    opts('Next Diagnostic'))
+    vim.keymap.set('n', '[e',    api.node.navigate.diagnostics.prev,    opts('Prev Diagnostic'))
+    vim.keymap.set('n', 'F',     api.live_filter.clear,                 opts('Clean Filter'))
+    vim.keymap.set('n', 'f',     api.live_filter.start,                 opts('Filter'))
+    vim.keymap.set('n', 'g?',    api.tree.toggle_help,                  opts('Help'))
+    vim.keymap.set('n', 'gy',    api.fs.copy.absolute_path,             opts('Copy Absolute Path'))
+    vim.keymap.set('n', 'I',     api.tree.toggle_gitignore_filter,      opts('Toggle Git Ignore'))
+    vim.keymap.set('n', 'J',     api.node.navigate.sibling.last,        opts('Last Sibling'))
+    vim.keymap.set('n', 'K',     api.node.navigate.sibling.first,       opts('First Sibling'))
+    vim.keymap.set('n', 'm',     api.marks.toggle,                      opts('Toggle Bookmark'))
+    vim.keymap.set('n', 'o',     api.node.open.edit,                    opts('Open'))
+    vim.keymap.set('n', 'O',     api.node.open.no_window_picker,        opts('Open: No Window Picker'))
+    vim.keymap.set('n', 'p',     api.fs.paste,                          opts('Paste'))
+    vim.keymap.set('n', 'P',     api.node.navigate.parent,              opts('Parent Directory'))
+    vim.keymap.set('n', 'q',     api.tree.close,                        opts('Close'))
+    vim.keymap.set('n', 'r',     api.fs.rename,                         opts('Rename'))
+    vim.keymap.set('n', 'R',     api.tree.reload,                       opts('Refresh'))
+    vim.keymap.set('n', 's',     api.node.run.system,                   opts('Run System'))
+    vim.keymap.set('n', 'S',     api.tree.search_node,                  opts('Search'))
+    vim.keymap.set('n', 'U',     api.tree.toggle_custom_filter,         opts('Toggle Hidden'))
+    vim.keymap.set('n', 'W',     api.tree.collapse_all,                 opts('Collapse'))
+    vim.keymap.set('n', 'x',     api.fs.cut,                            opts('Cut'))
+    vim.keymap.set('n', 'y',     api.fs.copy.filename,                  opts('Copy Name'))
+    vim.keymap.set('n', 'Y',     api.fs.copy.relative_path,             opts('Copy Relative Path'))
+    vim.keymap.set('n', '<2-LeftMouse>',  api.node.open.edit,           opts('Open'))
+    vim.keymap.set('n', '<2-RightMouse>', api.tree.change_root_to_node, opts('CD'))
+   -- END_DEFAULT_ON_ATTACH
+
+    -- Remove unwanted mappings
+    --vim.keymap.set('n', 'H', '', { buffer = bufnr })
+    --vim.keymap.del('n', 'H', { buffer = bufnr })
+end
+
+require "nvim-tree".setup {
+    diagnostics = {
+        enable = true,
+        show_on_dirs = true,
+        show_on_open_dirs = true,
+        severity = {
+          min = vim.diagnostic.severity.WARN,
+          max = vim.diagnostic.severity.ERROR,
+        }
+    },
+    on_attach = on_attach,
+    git = {
+        enable = true,
+        ignore = false
+    }
+}
+LUA
+
+" Toggle nvim tree on and off with F7
+nmap <F7> :NvimTreeToggle<CR>
+
+"------------------------------------------------------------------------------
+" Telescope
+"------------------------------------------------------------------------------
+
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fm <cmd>Telescope keymaps<cr>
+
+lua << LUA
+require("telescope").setup({
+    defaults = {
+        path_display = { truncate = 0 }
+    }
+})
+LUA
+
+"------------------------------------------------------------------------------
+" vim-airline
+"------------------------------------------------------------------------------
+
+let g:airline_theme = "catppuccin"
